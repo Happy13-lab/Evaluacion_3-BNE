@@ -1,38 +1,39 @@
-import pymongo as pm
-import sys
-import asyncio
-import bcrypt
 from Config.db_config import MongoConfing
+from Model.Persona_M import usuarioModel
+from Model.Objeto_M import stockModel, ventaModel, registroVentaModel
+from Controller.Persona_C import UsuarioController
+from Controller.Objeto_C import stockController, ventaController, reporteController
+import pymongo as pm
 
-mongo = MongoConfing(
+
+mongo = pm.MongoConfing(
     host="mongodb://localhost:27017",
     database="AcmeDB"
 )
 
-
-
 def main():
-    db = mongo.createCollection("Prueba01")
-    prueba01_coleccion = db["Prueba01"]
+    # Inicializar conexión y modelo de usuarios
+    db = mongo
+    user_model = usuarioModel(db)
+    user_model.crear_usuario()  # Inserta admin y vendedor si no existen
 
-    # usuario = {
-    #     "nombre": "Juan",
-    #     "apellido": "Perez",
-    #     "edad": 30
-    # }
+    # Inicializar controlador de usuarios
+    usuario_ctrl = UsuarioController(user_model)
 
-    # resultado = prueba01_coleccion.insert_one(usuario)
+    # Bucle principal
+    while True:
+        print("\n=== SISTEMA DE VENTAS DE SALMÓN ===")
+        if not usuario_ctrl.iniciar_sesion():
+            opcion = input("¿Desea intentar nuevamente? (s/n): ").lower()
+            if opcion != "s":
+                print("Saliendo del sistema...")
+                break
+        else:
+            # Cuando el usuario inicia sesión, se queda en su menú
+            # Los menús ya están definidos en UsuarioController
+            pass
 
-    # print(resultado.inserted_id)
+if __name__ == "__main__":
+    main()
 
-    # resultado = prueba01_coleccion.find_one()
-    # print(resultado)
-   
-    # for x in resultado:
-    #     print(x)
 
-    resultado = prueba01_coleccion.update_one({"nombre": "Juan"}, {"$set": { "Correo": "juan@gmail.com" }})
-
-    print(resultado.modified_count)
-
-main()

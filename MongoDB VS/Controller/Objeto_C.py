@@ -1,11 +1,12 @@
-from Config.db_config import db_config
+from Config.db_config import MongoConfing
 from Model.Objeto_M import stockModel, ventaModel, registroVentaModel
-from View.Objeto_V import View
+from Model.Persona_M import usuarioModel
 import datetime
+import View
         
 class stockController():
     def __init__(self):
-        self.db = db_config()
+        self.db = MongoConfing()
         self.coleccion = self.db.db["stock"]
     
     def insertar_stock(self):
@@ -36,7 +37,7 @@ class stockController():
 
 class ventaController():
     def __init__(self):
-        self.db = db_config()
+        self.db = MongoConfing()
         self.coleccion = self.db.db["ventas"]
     
     def registrar_venta(self):
@@ -49,15 +50,15 @@ class ventaController():
             else:
                 View.mostrar_mensaje(f"Cantidad inválida para {salmon['tipo']}. Se omitirá este producto.")
         if pedido:
-            venta = ventaModel(pedido=str(pedido))
-            self.coleccion.insert_one({"pedido": venta.pedido, "fecha": datetime.datetime.now()})
+            venta = ventaModel(pedido=pedido)
+            self.coleccion.insert_one({"pedido": venta.pedido, "fecha": venta.fecha})
             View.mostrar_mensaje("Venta registrada exitosamente.")
             return True
         return False
 
 class reporteController():
     def __init__(self):
-        self.db = db_config()
+        self.db = MongoConfing()
         self.stock= self.db.db["stock"]
         self.ventas= self.db.db["ventas"]
     
@@ -65,6 +66,8 @@ class reporteController():
         ventas = self.ventas.find()
         for venta in ventas:
             View.mostrar_mensaje(f"Pedido: {venta['pedido']}, Fecha: {venta['fecha']}")
+            for p in venta["pedido"]:
+                print(f" - {p['tipo']}: {p['cantidad']} kilos a ${p['precio']}")
 
     def reporte_mas_vendido(self):
         View.mostrar_mensaje("Reporte de producto más vendido:")
@@ -78,3 +81,9 @@ class reporteController():
             View.mostrar_mensaje(f"Producto más vendido: {mas_vendido} con {conteo[mas_vendido]} unidades vendidas.")
         else:
             View.mostrar_mensaje("No se han registrado ventas aún.")
+
+    def reporte_coste_ganancia(self):
+        View.mostrar_mensaje("\n--- Reporte Coste/Ganancia ---")
+        for salmon in self.stock.find():
+            ganancia_unitaria = salmon["valor_venta"] - salmon["coste"]
+            print(f"{salmon['tipo']}: coste {salmon['coste']} | venta {salmon['valor_venta']} | ganancia por kilo {ganancia_unitaria}")

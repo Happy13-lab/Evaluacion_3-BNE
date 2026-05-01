@@ -12,6 +12,6 @@ class ventaModel():
         self.pedido = pedido
 
 class registroVentaModel():
-    def __init__(self, pedido = str, fecha = datetime):
+    def __init__(self, pedido = str, fecha = None):
         self.pedido = pedido
-        self.fecha = fecha
+        self.fecha = datetime.datetime.now() or fecha
