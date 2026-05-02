@@ -19,7 +19,7 @@ class stockController():
             ]
             self.coleccion.insert_many(productos_iniciales)
             print("Productos iniciales insertados en la colección.")
-    
+
     def obtener_stock(self, tipo):
         return self.coleccion.find_one({"tipo": tipo})
     
