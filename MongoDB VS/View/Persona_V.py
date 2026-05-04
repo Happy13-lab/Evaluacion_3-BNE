@@ -20,9 +20,9 @@ class PersonaView:
                 precio = int(input("Nuevo precio de venta (Enter para omitir): ") or 0)
                 actualizado = self.stockCtrl.actualizar_stock_precio(tipo, cantidad if cantidad > 0 else None, precio if precio > 0 else None)
                 if actualizado:
-                    View.mostrar_mensaje("Stock/precio actualizado correctamente.")
+                    print("Stock/precio actualizado correctamente.")
                 else:
-                    View.mostrar_mensaje("No se realizó ninguna actualización.")
+                    print("No se realizó ninguna actualización.")
 
             elif opcion == "2":
                 self.reporteCtrl.reporte_ventas()
@@ -39,8 +39,8 @@ class PersonaView:
 
             elif opcion == "4":
                 self.usuario_actual = None
-                View.mostrar_mensaje("Sesión cerrada.")
+                print("Sesión cerrada.")
                 break
 
             else:
-                View.mostrar_mensaje("Opción no válida.")
+                print("Opción no válida.")

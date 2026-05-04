@@ -14,6 +14,4 @@ class View:
         print("1. Registrar venta")
         print("2. Salir")
 
-    @staticmethod
-    def mostrar_mensaje(msg):
-        print(msg)
+

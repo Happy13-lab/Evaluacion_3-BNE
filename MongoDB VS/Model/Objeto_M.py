@@ -8,8 +8,9 @@ class stockModel():
         self.cantidad = cantidad
 
 class ventaModel():
-    def __init__(self, pedido = str):
+    def __init__(self, pedido = str,fecha = None):
         self.pedido = pedido
+        self.fecha = datetime.datetime.now() or fecha
 
 class registroVentaModel():
     def __init__(self, pedido = str, fecha = None):
