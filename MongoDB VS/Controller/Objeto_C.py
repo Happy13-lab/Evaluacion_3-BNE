@@ -47,7 +47,12 @@ class ventaController():
         for salmon in self.db.db["stock"].find():
             while True:
                 try:
-                    entrada = input(f"Ingrese la cantidad de {salmon['tipo']} a vender (stock disponible: {salmon['cantidad']} : ")
+                    entrada = input(f"Ingrese la cantidad de {salmon['tipo']} a vender (stock disponible: {salmon['cantidad']}) : ")
+
+                    if entrada == "":
+                        print("Venta cancelada para este producto.")
+                        break
+
                     cantidad = int(entrada)
                     if cantidad < 0:
                         print("Cantidad no puede ser negativa.")
@@ -61,6 +66,8 @@ class ventaController():
                        print(f"Cantidad excede el stock disponible para {salmon['tipo']}.")
                 except ValueError:
                     print("Solo se permiten Numeros enteros.")
+
+                    
                     
         if pedido:
             venta = ventaModel(pedido=pedido)
