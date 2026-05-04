@@ -1,23 +1,18 @@
-from Config.db_config import MongoConfing
+from Config.db_config import db_config
 from Model.Persona_M import usuarioModel
 from Model.Objeto_M import stockModel, ventaModel, registroVentaModel
 from Controller.Persona_C import UsuarioController
-from Controller.Objeto_C import stockController, ventaController, reporteController
+from Controller.Objeto_C import  stockController, ventaController, reporteController
 import pymongo as pm
 
 
-mongo = pm.MongoConfing(
-    host="mongodb://localhost:27017",
-    database="AcmeDB"
-)
+mongo = db_config()
 
 def main():
-    # Inicializar conexión y modelo de usuarios
     db = mongo
     user_model = usuarioModel(db)
-    user_model.crear_usuario()  # Inserta admin y vendedor si no existen
+    user_model.crear_usuario() 
 
-    # Inicializar controlador de usuarios
     usuario_ctrl = UsuarioController(user_model)
 
     # Bucle principal

@@ -1,8 +1,8 @@
-from Config.db_config import MongoConfing
+from Config.db_config import db_config
 import hashlib
  
 class usuarioModel():
-    def __init__(self, db_config):
+    def __init__(self, db_config = db_config):
         self.coleccion = db_config.db["usuarios"]
     
     def hash_contraseña(self, contraseña):

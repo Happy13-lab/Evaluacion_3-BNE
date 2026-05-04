@@ -1,7 +1,7 @@
 from Controller import stockController, ventaController, reporteController
 from View.Objeto_V import View
 
-class UsuarioController:
+class PersonaView:
     def __init__(self, usuarioModel):
         self.usuarioModel = usuarioModel
         self.usuario_actual = None

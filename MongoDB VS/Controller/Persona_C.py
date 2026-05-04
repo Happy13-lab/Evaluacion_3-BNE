@@ -1,9 +1,10 @@
-from Config.db_config import MongoConfing
-from Model.Persona_M import usuarioModel 
+from Config.db_config import db_config
+from Model.Objeto_M import stockModel, ventaModel, registroVentaModel
+from Model.Persona_M import usuarioModel
 
 class UsuarioController:
-    def __init__(self, usuarioModel):
-        
+    def __init__(self, usuarioModel = usuarioModel, db_config = db_config):
+        self.db_config = db_config
         self.usuarioModel = usuarioModel
         self.usuario_actual = None 
 
